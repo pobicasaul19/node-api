@@ -1,0 +1,28 @@
+# version: '3.8'
+services:
+  app:
+    image: node:16
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: >
+      bash -c "npm install && npm run dev"
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    container_name: database
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+
+volumes:
+  mongo-data:
